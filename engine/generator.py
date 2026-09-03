@@ -1,12 +1,13 @@
-"""Hybrid orchestrator: tries the local Ollama model for each platform,
-falls back to the deterministic template engine per-platform on any
-failure, and always runs a deterministic voice/banned-phrase lint pass
-(that part never depends on AI being available at all)."""
+"""Hybrid orchestrator: tries the local Ollama model for each platform, then
+Gemini's free tier if configured, falls back to the deterministic template
+engine per-platform on any failure, and always runs a deterministic
+voice/banned-phrase lint pass (that part never depends on AI being
+available at all)."""
 from __future__ import annotations
 
 import re
 
-from . import analysis, limits, ollama_client, templates
+from . import analysis, gemini_client, limits, ollama_client, templates
 
 HARD_RULES = """HARD RULES (never violate):
 - No em dashes or double dashes
@@ -57,7 +58,7 @@ def _build_prompt(platform: str, source_text: str, voice_text: str) -> str:
     )
 
 
-def _parse_structured(raw: str) -> dict | None:
+def _parse_structured(raw: str, engine: str) -> dict | None:
     m = _STRUCT_RE.search(raw)
     if not m:
         return None
@@ -71,7 +72,7 @@ def _parse_structured(raw: str) -> dict | None:
         "title": (m.group("title") or "").strip() or None,
         "body": body,
         "hashtags": tags,
-        "engine": "ollama",
+        "engine": engine,
     }
 
 
@@ -84,13 +85,23 @@ NUM_PREDICT = {
 
 
 def generate_one(platform: str, source_text: str, voice_text: str, use_ai: bool, model: str | None) -> dict:
-    if use_ai and ollama_client.is_available():
+    if use_ai:
         prompt = _build_prompt(platform, source_text, voice_text)
-        raw = ollama_client.generate(prompt, model=model, num_predict=NUM_PREDICT.get(platform, 400))
-        if raw:
-            parsed = _parse_structured(raw)
-            if parsed:
-                return parsed
+
+        if ollama_client.is_available():
+            raw = ollama_client.generate(prompt, model=model, num_predict=NUM_PREDICT.get(platform, 400))
+            if raw:
+                parsed = _parse_structured(raw, "ollama")
+                if parsed:
+                    return parsed
+
+        if gemini_client.is_available():
+            raw = gemini_client.generate(prompt, num_predict=NUM_PREDICT.get(platform, 400))
+            if raw:
+                parsed = _parse_structured(raw, "gemini")
+                if parsed:
+                    return parsed
+
     # fallback: deterministic template engine (always works, zero setup)
     return templates.generate(platform, source_text)
 
@@ -108,7 +119,9 @@ def run(platforms: list[str], source_text: str, voice_text: str, use_ai: bool = 
         if on_progress:
             on_progress(platform, result)
     results["_meta"] = {
-        "ai_available": ollama_client.is_available() if use_ai else False,
+        "ai_available": (ollama_client.is_available() or gemini_client.is_available()) if use_ai else False,
+        "ollama_available": ollama_client.is_available() if use_ai else False,
+        "gemini_available": gemini_client.is_available() if use_ai else False,
         "model": model,
     }
     return results

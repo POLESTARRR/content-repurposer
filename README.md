@@ -5,21 +5,27 @@ platform-native posts for **X, Instagram, Facebook, LinkedIn, YouTube,
 TikTok, and your newsletter**, ready to publish, with hooks scored,
 hashtags suggested, and a posting calendar built for you.
 
-**No paid API. No signup. No API key.** It costs $0 to run, forever.
+**$0 to run, forever, on any of its three engines.** The default needs no
+signup and no API key at all; the two AI engines are both free but do
+require a one-time, no-cost setup step.
 
 ## How it generates content
 
-Recast has two engines and picks the best one automatically.
+Recast has three engines and picks the best one available automatically.
 
 1. **Local AI (optional, better quality).** If you have [Ollama](https://ollama.com)
    installed, Recast uses whatever model you've pulled to write richer,
    more natural platform variants. Ollama runs entirely on your own Mac,
    so nothing is sent over the internet, there's no account, and there's
    no per-use cost.
-2. **Instant template engine (zero setup).** If Ollama isn't installed,
-   Recast falls back automatically to a built-in rule-based generator
-   (extractive summarization plus platform templates). It works the
-   moment you open the app, with no installation required at all.
+2. **Gemini, free tier (optional, better quality, zero install).** If you'd
+   rather not install anything locally, a free [Google AI Studio](https://aistudio.google.com/apikey)
+   key gets you the same richer, more natural writing via the cloud instead.
+   Requires a one-time signup for the key; nothing else changes.
+3. **Instant template engine (zero setup).** If neither AI engine is
+   configured, Recast falls back automatically to a built-in rule-based
+   generator (extractive summarization plus platform templates). It works
+   the moment you open the app, with no installation or signup at all.
 
 Either way you get three scored hook options, a full post, suggested
 hashtags, a character-limit check against that platform's real rules,
@@ -40,13 +46,25 @@ and a best-time-to-post suggestion for every platform you select.
 
 ## Want richer AI written output? (optional, still free)
 
+Two options, pick either:
+
+**Local, offline:**
 ```bash
 brew install ollama
 ollama pull llama3.2:3b
 ```
 
-Reload the app. The sidebar will show "Local AI engine: llama3.2:3b" and
-generations will route through it automatically, with no further setup.
+**Cloud, free tier:** get a free key from [Google AI Studio](https://aistudio.google.com/apikey),
+then create `.streamlit/secrets.toml` (see `.streamlit/secrets.toml.example`)
+with:
+```toml
+GEMINI_API_KEY = "your-key-here"
+```
+
+Reload the app either way. The sidebar will show which engine is active
+("Local AI · llama3.2:3b" or "Gemini") and generations route through it
+automatically, with no further setup. Ollama is tried first if both are
+configured, since it keeps everything on your own machine.
 
 ## Make it sound like you
 
@@ -66,6 +84,7 @@ Content Repurposer/
   engine/
     extract.py               reads .txt/.md/.pdf/.docx into plain text
     ollama_client.py          talks to a local Ollama model, if present
+    gemini_client.py           talks to Gemini's free tier, if configured
     templates.py               zero setup rule-based fallback generator
     generator.py               hybrid orchestrator, voice and banned-phrase lint
     analysis.py                 hook scoring, hashtag and keyword extraction

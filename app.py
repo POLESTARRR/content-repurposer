@@ -12,7 +12,7 @@ from pathlib import Path
 import streamlit as st
 
 import theme
-from engine import export, extract, generator, limits, ollama_client
+from engine import export, extract, gemini_client, generator, limits, ollama_client
 
 ROOT = Path(__file__).resolve().parent
 VOICE_PATH = ROOT / "voice.md"
@@ -50,30 +50,47 @@ def _limit_caption(text: str, platform: str, part: str = "body") -> str:
     return f"{n} / {lim['hard']} chars ({tag})"
 
 
-ai_up = ollama_client.is_available()
-model_name = ollama_client.default_model() if ai_up else None
-engine_label = f"Local AI &middot; {model_name}" if (ai_up and model_name) else "Template engine (instant)"
-engine_label_plain = f"Local AI · {model_name}" if (ai_up and model_name) else "Template engine (instant)"
+ollama_up = ollama_client.is_available()
+model_name = ollama_client.default_model() if ollama_up else None
+gemini_up = gemini_client.is_available()
+ai_up = (ollama_up and model_name) or gemini_up
+
+if ollama_up and model_name:
+    engine_label = f"Local AI &middot; {model_name}"
+    engine_label_plain = f"Local AI · {model_name}"
+elif gemini_up:
+    engine_label = "Gemini"
+    engine_label_plain = "Gemini"
+else:
+    engine_label = "Template engine (instant)"
+    engine_label_plain = "Template engine (instant)"
 
 # ---------------------------------------------------------------- sidebar --
 st.sidebar.markdown("**Recast**")
-st.sidebar.caption("No paid API. Runs locally and free forever.")
+st.sidebar.caption("Free to run, always. No signup needed for the default setup.")
 
-if ai_up and model_name:
+if ollama_up and model_name:
     st.sidebar.success(f"Local AI engine: **{model_name}** (via Ollama)")
-elif ai_up:
+elif ollama_up:
     st.sidebar.warning("Ollama is running but no model is pulled yet. Using the template engine.")
+elif gemini_up:
+    st.sidebar.success("AI engine: **Gemini** (free tier)")
 else:
     st.sidebar.info("Template engine active. Instant, zero setup.")
     with st.sidebar.expander("Want richer AI written variants? (optional)"):
         st.markdown(
-            "Install [Ollama](https://ollama.com) for free, local, offline AI generation. "
-            "No signup and no API key, and nothing is sent over the internet.\n\n"
-            "```bash\nbrew install ollama\nollama pull llama3.2:3b\n```\n"
+            "Two free options, pick either:\n\n"
+            "**Local, offline** — install [Ollama](https://ollama.com). No signup, "
+            "no API key, nothing sent over the internet.\n"
+            "```bash\nbrew install ollama\nollama pull llama3.2:3b\n```\n\n"
+            "**Cloud, free tier** — get a free key from "
+            "[Google AI Studio](https://aistudio.google.com/apikey), then add it to "
+            "`.streamlit/secrets.toml` as `GEMINI_API_KEY = \"...\"` (or as a secret "
+            "in your Streamlit Cloud app settings, if deployed).\n\n"
             "Then reload this page."
         )
 
-use_ai = st.sidebar.toggle("Use local AI when available", value=True)
+use_ai = st.sidebar.toggle("Use AI when available", value=True)
 
 st.sidebar.divider()
 st.sidebar.subheader("Your voice")
