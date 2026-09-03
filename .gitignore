@@ -5,3 +5,4 @@ output/
 .DS_Store
 bin/
 .streamlit/secrets.toml
+.env
