@@ -9,3 +9,6 @@
 
 ## 2026-09-05
 In app.py, edits made in the platform text boxes are only shown in the UI and are not written back to st.session_state.results before export. So the ZIP and calendar downloads can contain older generated text instead of the user’s edited copy.
+
+## 2026-09-06
+In app.py, edits made in the platform text boxes are only shown in the UI and are not written back to st.session_state.results before export. So the ZIP and calendar downloads can contain older generated text instead of the user's edited copy.
