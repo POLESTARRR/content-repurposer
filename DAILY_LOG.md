@@ -21,3 +21,6 @@ The `count_tokens()` utility in `gemini_client.py` provides pre-flight token bud
 
 ## 2026-10-12
 The engine uses platform character limits to enforce hard truncation: Twitter at a specific limit, LinkedIn and Instagram at their respective maximums.
+
+## 2026-10-12
+The `_post_process()` method in `generator.py` truncates content to platform-specific character limits and only appends hashtags if they fit within the budget.
