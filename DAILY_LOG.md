@@ -18,3 +18,6 @@ In app.py, edits made in the platform text boxes are only shown in the UI and ar
 
 ## 2026-10-12
 The `count_tokens()` utility in `gemini_client.py` provides pre-flight token budget checks before API calls.
+
+## 2026-10-12
+The engine uses platform character limits to enforce hard truncation: Twitter at a specific limit, LinkedIn and Instagram at their respective maximums.
