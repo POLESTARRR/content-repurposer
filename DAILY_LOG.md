@@ -24,3 +24,6 @@ The engine uses platform character limits to enforce hard truncation: Twitter at
 
 ## 2026-10-12
 The `_post_process()` method in `generator.py` truncates content to platform-specific character limits and only appends hashtags if they fit within the budget.
+
+## 2026-10-19
+The `gemini_client.py` wrapper uses `gemini-1.5-flash` model with hardcoded temperature=0.7 and top_p=0.9 parameters.
