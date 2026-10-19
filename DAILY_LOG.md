@@ -27,3 +27,6 @@ The `_post_process()` method in `generator.py` truncates content to platform-spe
 
 ## 2026-10-19
 The `gemini_client.py` wrapper uses `gemini-1.5-flash` model with hardcoded temperature=0.7 and top_p=0.9 parameters.
+
+## 2026-10-19
+Content generation prompts are assembled from platform-specific style instructions stored in the `PLATFORM_CONFIGS` dict.
