@@ -30,3 +30,6 @@ The `gemini_client.py` wrapper uses `gemini-1.5-flash` model with hardcoded temp
 
 ## 2026-10-19
 Content generation prompts are assembled from platform-specific style instructions stored in the `PLATFORM_CONFIGS` dict.
+
+## 2026-10-20
+A `_safe_parse()` method in `gemini_client.py` strips markdown code fences (```json) from Gemini responses to handle structured output.
