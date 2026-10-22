@@ -39,3 +39,6 @@ No validation exists for empty or None responses from the Gemini API before atte
 
 ## 2026-10-22
 Retry logic in `generator.py` is implemented via a `@retry(max_attempts=3, backoff=2)` decorator pattern with exponential backoff.
+
+## 2026-10-23
+The `DAILY_LOG.md` format uses date headers with nested bullet lists for content sources and platform-specific posting status.
