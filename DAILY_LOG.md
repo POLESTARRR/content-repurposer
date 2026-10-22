@@ -42,3 +42,6 @@ Retry logic in `generator.py` is implemented via a `@retry(max_attempts=3, backo
 
 ## 2026-10-23
 The `DAILY_LOG.md` format uses date headers with nested bullet lists for content sources and platform-specific posting status.
+
+## 2026-10-23
+The retry decorator wraps the `generate_content()` method, making API failures resilient with automatic exponential backoff.
