@@ -36,3 +36,6 @@ A `_safe_parse()` method in `gemini_client.py` strips markdown code fences (```j
 
 ## 2026-10-22
 No validation exists for empty or None responses from the Gemini API before attempting to parse them.
+
+## 2026-10-22
+Retry logic in `generator.py` is implemented via a `@retry(max_attempts=3, backoff=2)` decorator pattern with exponential backoff.
