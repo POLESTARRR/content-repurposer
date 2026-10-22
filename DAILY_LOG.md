@@ -33,3 +33,6 @@ Content generation prompts are assembled from platform-specific style instructio
 
 ## 2026-10-20
 A `_safe_parse()` method in `gemini_client.py` strips markdown code fences (```json) from Gemini responses to handle structured output.
+
+## 2026-10-22
+No validation exists for empty or None responses from the Gemini API before attempting to parse them.
