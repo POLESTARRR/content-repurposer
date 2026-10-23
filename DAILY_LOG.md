@@ -45,3 +45,6 @@ The `DAILY_LOG.md` format uses date headers with nested bullet lists for content
 
 ## 2026-10-23
 The retry decorator wraps the `generate_content()` method, making API failures resilient with automatic exponential backoff.
+
+## 2026-10-23
+Hashtags are generated as part of the `ContentPiece` dataclass and stored separately from the main text field.
