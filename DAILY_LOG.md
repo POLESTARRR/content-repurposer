@@ -51,3 +51,6 @@ Hashtags are generated as part of the `ContentPiece` dataclass and stored separa
 
 ## 2026-10-28
 The `DAILY_LOG.md` tracks content sources, target platforms, generation status, and posting status in a structured markdown format.
+
+## 2026-10-28
+API key is loaded from environment variable `GEMINI_API_KEY` in `gemini_client.py` without fallback or validation.
