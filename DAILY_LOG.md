@@ -48,3 +48,6 @@ The retry decorator wraps the `generate_content()` method, making API failures r
 
 ## 2026-10-23
 Hashtags are generated as part of the `ContentPiece` dataclass and stored separately from the main text field.
+
+## 2026-10-28
+The `DAILY_LOG.md` tracks content sources, target platforms, generation status, and posting status in a structured markdown format.
