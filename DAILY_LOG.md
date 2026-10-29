@@ -60,3 +60,6 @@ The `generator.py` uses a `ContentPiece` dataclass with fields for platform, tex
 
 ## 2026-10-29
 API key is loaded from environment variable `GEMINI_API_KEY` in `gemini_client.py` without fallback or validation.
+
+## 2026-10-29
+The `DAILY_LOG.md` tracks content sources, target platforms, generation status, and posting status in a structured markdown format.
