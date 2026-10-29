@@ -54,3 +54,6 @@ The `DAILY_LOG.md` tracks content sources, target platforms, generation status, 
 
 ## 2026-10-28
 API key is loaded from environment variable `GEMINI_API_KEY` in `gemini_client.py` without fallback or validation.
+
+## 2026-10-29
+The `generator.py` uses a `ContentPiece` dataclass with fields for platform, text, hashtags, and char_count, providing structured content output.
