@@ -63,3 +63,6 @@ API key is loaded from environment variable `GEMINI_API_KEY` in `gemini_client.p
 
 ## 2026-10-29
 The `DAILY_LOG.md` tracks content sources, target platforms, generation status, and posting status in a structured markdown format.
+
+## 2026-10-31
+Platform configurations in `PLATFORM_CONFIGS` dict map platform names to max_chars and style instructions for Twitter, LinkedIn, and Instagram.
